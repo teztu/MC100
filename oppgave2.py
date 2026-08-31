@@ -1,3 +1,38 @@
+"""
+Scenariet
+
+En virksomhet har flere applikasjoner som trenger en unik identifikator og en sikker API-token.
+Dette skal ikke håndteres manuelt, men administreres gjennom et Python-program.
+
+Når en ny applikasjon opprettes, skal programmet generere en unik UUID ved hjelp av uuid.uuid4()
+og en sikker API-token ved hjelp av secrets.token_hex(32).
+
+Applikasjonene lagres i en dictionary der UUID-en brukes som unik identifikator.
+Hver UUID er knyttet til informasjon om applikasjonen, som navn og API-token.
+
+Programmet skal la brukeren:
+- Opprette en ny applikasjon
+- Generere en ny API-token for en eksisterende applikasjon
+- Søke etter en applikasjon ved hjelp av UUID
+- Vise alle registrerte applikasjoner
+- Avslutte programmet
+
+Når en ny API-token genereres, skal den gamle tokenen erstattes.
+Hvis en UUID ikke finnes, skal programmet gi en passende feilmelding.
+
+API-tokenen er sensitiv informasjon og bør derfor ikke vises i sin helhet når alle
+applikasjoner listes. Kun deler av tokenen skal være synlig.
+
+Poenget med oppgaven er å øve på:
+- secrets
+- uuid
+- dictionaries
+- nested dictionaries
+- functions
+- loops
+- sikker håndtering av API-tokens
+"""
+
 import secrets
 import uuid
 
