@@ -1,7 +1,9 @@
 # MC100 - Secure Software Development
 
-A collection of lab exercises, practice assignments, and Python programs from the MC100 - Secure Software Development course
+A collection of lab exercises, practice assignments, and Python programs created as part of the MC100 - Secure Software Development course.
 
-The repository is used to practice secure coding, cryptography, password generation, UUIDs, API tokens, logging, and other basic cybersecurity concepts.
+The repository is used to practice cybersecurity concepts.
 
-All code is by Nicolas Cook
+All implementations in this repository are my own coursework unless otherwise stated.
+
+This repository is intended for educational purposes only.
