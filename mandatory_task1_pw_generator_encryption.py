@@ -8,58 +8,47 @@ from cryptography.fernet import Fernet
 class PasswordGenerator:
 
     def __init__(self):
-        #non public data
+
         self.__password = ""
         self.__key = None
         self.__fernet = None
 
 
     def generate_password(self, length, lower, upper, digits, symbols):
-
+        #checks password length
         if not 8 <= length <= 20:
             raise ValueError("Password length must be between 8 and 20")
 
-        characters = ""
-        required = []
+        characters = "" #all signs program can choose from
+        required = [] # all signs that HAVE to be included
 
         if lower == "y":
             characters += string.ascii_lowercase
-            required.append(
-                secrets.choice(string.ascii_lowercase)
-            )
+            required.append(secrets.choice(string.ascii_lowercase))
 
         if upper == "y":
             characters += string.ascii_uppercase
-            required.append(
-                secrets.choice(string.ascii_uppercase)
-            )
+            required.append(secrets.choice(string.ascii_uppercase))
 
         if digits == "y":
             characters += string.digits
-            required.append(
-                secrets.choice(string.digits)
-            )
+            required.append(secrets.choice(string.digits))
 
         if symbols == "y":
             special = "!@#$%^&*"
             characters += special
-            required.append(
-                secrets.choice(special)
-            )
+            required.append(secrets.choice(special))
 
         if not characters: #ensures character strength of atleast 1
             raise ValueError("You must select at least one character type")
 
-        #finishes password with strong charachters
-        required += [
-            secrets.choice(characters)
-            for _ in range(length - len(required))
-        ]
+        #completes remaining password length
+        required += [secrets.choice(characters) for _ in range(length - len(required))]
 
         #secret shuffle to avoid pattern of having same type of symbols in the same order
         secrets.SystemRandom().shuffle(required)
 
-        self.__password = "".join(required)
+        self.__password = "".join(required) # turns list to string and saves it inside the object
 
         return self.__password
 
@@ -76,43 +65,37 @@ class PasswordGenerator:
 
 
     def use_existing_key(self, entered_key):
-
+        #encodes input key
         self.__key = entered_key.encode()
 
-        #uses chosen key
+        #assigns new chosen key
         self.__fernet = Fernet(self.__key)
 
         return self.__key
 
 
     def encrypt_password(self):
-
-        encrypted_password = self.__fernet.encrypt(
-            self.__password.encode()
-        )
+        #encodes current password
+        encrypted_password = self.__fernet.encrypt(self.__password.encode())
 
         return encrypted_password
 
 
     def decrypt_password(self, encrypted_password):
 
-        decrypted_password = self.__fernet.decrypt(
-            encrypted_password
-        ).decode()
+        decrypted_password = self.__fernet.decrypt(encrypted_password).decode()
 
         return decrypted_password
 
 
     def verify_password(self, encrypted_password):
 
-        decrypted_password = self.decrypt_password(
-            encrypted_password
-        )
+        decrypted_password = self.decrypt_password(encrypted_password)
 
-        return decrypted_password == self.__password #check if true
+        return decrypted_password == self.__password #verify that decrypting returns the original password
 
 
-#ensure the user chooses
+#ensures correct user input
 def ask_yes_no(question):
 
     while True:
@@ -121,7 +104,7 @@ def ask_yes_no(question):
         if answer == "y" or answer == "n":
             return answer
 
-        print("Invalid input. Please enter y or n.")
+        print("Invalid user input. Please enter 'y' or 'n'.")
 
 
 
@@ -130,9 +113,7 @@ def ask_length():
     while True:#ensuring password length is strong
 
         try:
-            length = int(
-                input("Enter your desired password length (8-20): ")
-            )
+            length = int(input("Enter your desired password length (8-20): "))
 
             if 8 <= length <= 20:
                 return length
@@ -146,9 +127,9 @@ def ask_length():
 def choose_key(generator):
 
     while True:
-
+        # allows the user to choose key
         print("\nKey options:")
-        print("1. Generate a secure Fernet key")
+        print("1. Generate Fernet key")
         print("2. Use your own Fernet key")
 
         choice = input("Choose key option: ").strip()
@@ -158,9 +139,7 @@ def choose_key(generator):
 
         elif choice == "2":
 
-            entered_key = input(
-                "Enter existing Fernet key: "
-            ).strip()
+            entered_key = input("Enter existing Fernet key: ").strip()
 
             try:
                 return generator.use_existing_key(entered_key)
@@ -218,9 +197,7 @@ def main():
 
 
     #decrypt password
-    decrypted_password = generator.decrypt_password(
-        encrypted_password
-    )
+    decrypted_password = generator.decrypt_password(encrypted_password)
 
     print("Decrypted password:", decrypted_password)
 
