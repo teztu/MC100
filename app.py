@@ -63,7 +63,7 @@ def verify_password(username, password): #authenticator
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users WHERE username=?', (username,))
-    user = cursor.fetchone()
+    user = cursor.fetchone() #fetches the next row of a query result set
     conn.close()
     if user and user[2] == hash_password(password):
         g.user = user
@@ -74,7 +74,7 @@ def verify_password(username, password): #authenticator
 @app.route('/api/userinfo')
 @auth.login_required
 def get_user_info():
-    user = g.user
+    user = g.user #saves authenticated user for the current request
     return jsonify({'id': user[0], 'username': user[1]})
 
 # API route for user registration
